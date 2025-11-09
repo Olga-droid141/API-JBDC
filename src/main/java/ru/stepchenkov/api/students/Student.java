@@ -1,4 +1,4 @@
-package ru.stepchenkov.api.payload;
+package ru.stepchenkov.api.students;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

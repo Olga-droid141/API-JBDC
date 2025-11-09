@@ -1,4 +1,4 @@
-package ru.stepchenkov.api.payload.entity;
+package ru.stepchenkov.api.students.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
