@@ -28,4 +28,15 @@ public class StudentTagsDao extends _BaseMainDao {
                 .list()
         );
     }
+
+    public List<StudentTagsEntity> findAllStudentsHasTag(String tag) {
+        final String query = """
+                SELECT * FROM STUDENT_TAGS WHERE TAG_ID = (SELECT ID FROM TAGS WHERE NAME = ?)
+                """;
+        return jdbi.withHandle(handle -> handle.createQuery(query)
+                .bind(0, tag)
+                .mapTo(StudentTagsEntity.class)
+                .list()
+        );
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class StudentsDao extends _BaseMainDao {
 
-    public List<StudentEntity> findAllStudent(String name) {
+    public List<StudentEntity> findAllStudent() {
         final String query = """
                 SELECT * FROM STUDENTS
                 """;
@@ -40,6 +40,17 @@ public class StudentsDao extends _BaseMainDao {
                         .bind(0, id)
                         .mapTo(StudentEntity.class)
                         .one()
+        );
+    }
+
+    public void updateStudentName(String id, String newName) {
+        final String query = """
+                UPDATE STUDENTS SET NAME = ? WHERE ID = ?
+                """;
+        jdbi.useHandle(handle -> handle.createUpdate(query)
+                .bind(0, newName)
+                .bind(1, id)
+                .execute()
         );
     }
 
