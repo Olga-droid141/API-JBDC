@@ -1,5 +1,6 @@
 package ru.stepchenkov.api;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import ru.stepchenkov.api.students.entity.StudentDto;
 import ru.stepchenkov.utils.DateTime;
@@ -8,7 +9,7 @@ import ru.stepchenkov.utils.Fakers;
 import java.util.Collections;
 
 
-public class StudentTest extends BaseTest {
+public class StudentApiTest extends BaseTest {
 
     private static StudentDto correctStudent;
     private static int studentId;
@@ -28,7 +29,7 @@ public class StudentTest extends BaseTest {
     @Order(0)
     @DisplayName("Корректный запрос POST /student")
     public void studentPositiveTest() {
-        StudentDto studentDto = Service.student.post(
+        StudentDto studentDto = Service.studentApi.post(
                 correctStudent
         ).then().statusCode(201).extract().as(StudentDto.class);
         studentId = studentDto.getId();
@@ -38,25 +39,27 @@ public class StudentTest extends BaseTest {
     @Order(1)
     @DisplayName("Отправка некорректного запроса POST /student, попытка создать дубль")
     public void studentDubleTest() {
-        Service.student.post(
+        Service.studentApi.post(
                 correctStudent
-        ).then().statusCode(400);
+        ).then().statusCode(400)
+                .body("title", Matchers.equalTo("такой email уже существует"));
     }
 
     @Test
     @Order(2)
     @DisplayName("Отправка некорректного запроса POST /student, неверный формат email")
     public void studentWrongEmailTest() {
-        Service.student.post(
+        Service.studentApi.post(
                 correctStudent.toBuilder().email(Fakers.randomString()).build()
-        ).then().statusCode(400);
+        ).then().statusCode(400)
+                .body("detail", Matchers.equalTo("должно иметь формат адреса электронной почты"));
     }
 
     @Test
     @Order(3)
     @DisplayName("Отправка некорректного запроса POST /student, добавить tag не из списка")
     public void studentWrongTagTest() {
-        Service.student.post(
+        Service.studentApi.post(
                 correctStudent.toBuilder().tags(Collections.singletonList("piton")).build()
         ).then().statusCode(400);
     }
@@ -65,7 +68,7 @@ public class StudentTest extends BaseTest {
     @Order(4)
     @DisplayName("Получить список всех студентов")
     public void getAllStudentsTest() {
-        Service.student.get()
+        Service.studentApi.get()
                 .then().statusCode(200)
                 .extract().as(StudentDto[].class);
     }
@@ -74,7 +77,7 @@ public class StudentTest extends BaseTest {
     @Order(5)
     @DisplayName("Получить существующего студента по id")
     public void getStudentTest() {
-        StudentDto studentDto = Service.student.get(String.valueOf(studentId))
+        StudentDto studentDto = Service.studentApi.get(String.valueOf(studentId))
                 .then().statusCode(200)
                 .extract().as(StudentDto.class);
         Assertions.assertEquals(correctStudent.toBuilder().id(studentId).build(), studentDto);
@@ -84,7 +87,7 @@ public class StudentTest extends BaseTest {
     @Order(6)
     @DisplayName("Получить несуществующего студента по id")
     public void getAbsentStudentTest() {
-        Service.student.get("-1")
+        Service.studentApi.get("-1")
                 .then().statusCode(404);
     }
 
@@ -92,7 +95,7 @@ public class StudentTest extends BaseTest {
     @Order(7)
     @DisplayName("Корректный запрос PUT /student")
     public void putStudentPositiveTest() {
-        Service.student.put(
+        Service.studentApi.put(
                 StudentDto.builder()
                         .email(Fakers.randomMail())
                         .name(Fakers.randomName())
@@ -107,7 +110,7 @@ public class StudentTest extends BaseTest {
     @Order(8)
     @DisplayName("Некорректный запрос PUT /student")
     public void putStudentNegativeTest() {
-        Service.student.put(
+        Service.studentApi.put(
                 correctStudent.toBuilder().createdAt(DateTime.currentDateTime(DateTime.yyyy_MM_dd)).build(),
                 String.valueOf(studentId)
         ).then().statusCode(400);
@@ -117,7 +120,7 @@ public class StudentTest extends BaseTest {
     @Order(9)
     @DisplayName("Удалить существующего студента")
     public void deleteStudentTest() {
-        Service.student.delete(String.valueOf(studentId))
+        Service.studentApi.delete(String.valueOf(studentId))
                 .then().statusCode(204);
     }
 
@@ -125,7 +128,7 @@ public class StudentTest extends BaseTest {
     @Order(10)
     @DisplayName("Удалить несуществующего студента")
     public void deleteAbsentStudentTest() {
-        Service.student.delete(String.valueOf(studentId))
+        Service.studentApi.delete(String.valueOf(studentId))
                 .then().statusCode(404);
     }
 
@@ -133,7 +136,7 @@ public class StudentTest extends BaseTest {
     @Order(11)
     @DisplayName("Корректный запрос PUT /student")
     public void putAbsentStudentTest() {
-        Service.student.put(
+        Service.studentApi.put(
                 StudentDto.builder()
                         .email(Fakers.randomMail())
                         .name(Fakers.randomName())

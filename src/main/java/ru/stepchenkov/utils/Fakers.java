@@ -2,12 +2,8 @@ package ru.stepchenkov.utils;
 
 import com.github.javafaker.Faker;
 import net.bytebuddy.utility.RandomString;
-import ru.stepchenkov.api.tags.Tag;
-import ru.stepchenkov.model.Tags;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Fakers {

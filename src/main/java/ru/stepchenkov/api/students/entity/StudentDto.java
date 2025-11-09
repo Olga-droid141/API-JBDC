@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder(toBuilder = true)

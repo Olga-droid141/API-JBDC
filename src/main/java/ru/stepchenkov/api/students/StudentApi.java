@@ -8,9 +8,9 @@ import ru.stepchenkov.api.students.entity.StudentDto;
 import ru.stepchenkov.env.Env;
 
 @Slf4j
-public class Student extends _BaseApi {
+public class StudentApi extends _BaseApi {
 
-    public Student() {
+    public StudentApi() {
         super(Env.API.API_CONFIG);
     }
 

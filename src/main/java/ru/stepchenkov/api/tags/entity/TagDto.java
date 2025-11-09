@@ -1,4 +1,4 @@
-package ru.stepchenkov.api.tags;
+package ru.stepchenkov.api.tags.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,10 +12,10 @@ import lombok.Value;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode
-public class Tag {
+public class TagDto {
 
     @JsonProperty("id")
-    String id;
+    Integer id;
 
     @JsonProperty("name")
     String name;
