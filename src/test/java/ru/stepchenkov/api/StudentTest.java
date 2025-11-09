@@ -26,7 +26,7 @@ public class StudentTest extends BaseTest {
 
     @Test
     @Order(0)
-    @DisplayName("Отправка корректного запроса POST /student")
+    @DisplayName("Корректный запрос POST /student")
     public void studentPositiveTest() {
         StudentDto studentDto = Service.student.post(
                 correctStudent
@@ -90,17 +90,57 @@ public class StudentTest extends BaseTest {
 
     @Test
     @Order(7)
-    @DisplayName("Удалить существующего студента")
-    public void deleteStudentTest() {
-        Service.student.get(String.valueOf(studentId))
-                .then().statusCode(204);
+    @DisplayName("Корректный запрос PUT /student")
+    public void putStudentPositiveTest() {
+        Service.student.put(
+                StudentDto.builder()
+                        .email(Fakers.randomMail())
+                        .name(Fakers.randomName())
+                        .createdAt(DateTime.currentDateTime(DateTime.yyyy_MM_dd_T_HH_mm_ssSSS_Z))
+                        .tags(Fakers.randomTags(3))
+                        .build(),
+                String.valueOf(studentId)
+        ).then().statusCode(200).extract().as(StudentDto.class);
     }
 
     @Test
     @Order(8)
+    @DisplayName("Некорректный запрос PUT /student")
+    public void putStudentNegativeTest() {
+        Service.student.put(
+                correctStudent.toBuilder().createdAt(DateTime.currentDateTime(DateTime.yyyy_MM_dd)).build(),
+                String.valueOf(studentId)
+        ).then().statusCode(400);
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("Удалить существующего студента")
+    public void deleteStudentTest() {
+        Service.student.delete(String.valueOf(studentId))
+                .then().statusCode(204);
+    }
+
+    @Test
+    @Order(10)
     @DisplayName("Удалить несуществующего студента")
     public void deleteAbsentStudentTest() {
-        Service.student.get("-2")
+        Service.student.delete(String.valueOf(studentId))
                 .then().statusCode(404);
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("Корректный запрос PUT /student")
+    public void putAbsentStudentTest() {
+        Service.student.put(
+                StudentDto.builder()
+                        .email(Fakers.randomMail())
+                        .name(Fakers.randomName())
+                        .createdAt(DateTime.currentDateTime(DateTime.yyyy_MM_dd_T_HH_mm_ssSSS_Z))
+                        .tags(Fakers.randomTags(3))
+                        .build(),
+                String.valueOf(studentId)
+        ).then().statusCode(404);
     }
 }
