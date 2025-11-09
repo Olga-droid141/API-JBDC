@@ -9,6 +9,7 @@ import ru.stepchenkov.utils.Fakers;
 import java.util.Collections;
 
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StudentApiTest extends BaseTest {
 
     private static StudentDto correctStudent;
@@ -26,7 +27,7 @@ public class StudentApiTest extends BaseTest {
 
 
     @Test
-    @Order(0)
+    @Order(1)
     @DisplayName("Корректный запрос POST /student")
     public void studentPositiveTest() {
         StudentDto studentDto = Service.studentApi.post(
@@ -36,7 +37,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     @DisplayName("Отправка некорректного запроса POST /student, попытка создать дубль")
     public void studentDubleTest() {
         Service.studentApi.post(
@@ -46,7 +47,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     @DisplayName("Отправка некорректного запроса POST /student, неверный формат email")
     public void studentWrongEmailTest() {
         Service.studentApi.post(
@@ -56,7 +57,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     @DisplayName("Отправка некорректного запроса POST /student, добавить tag не из списка")
     public void studentWrongTagTest() {
         Service.studentApi.post(
@@ -65,7 +66,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @DisplayName("Получить список всех студентов")
     public void getAllStudentsTest() {
         Service.studentApi.get()
@@ -74,7 +75,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @DisplayName("Получить существующего студента по id")
     public void getStudentTest() {
         StudentDto studentDto = Service.studentApi.get(String.valueOf(studentId))
@@ -84,7 +85,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @DisplayName("Получить несуществующего студента по id")
     public void getAbsentStudentTest() {
         Service.studentApi.get("-1")
@@ -92,7 +93,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     @DisplayName("Корректный запрос PUT /student")
     public void putStudentPositiveTest() {
         Service.studentApi.put(
@@ -107,7 +108,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     @DisplayName("Некорректный запрос PUT /student")
     public void putStudentNegativeTest() {
         Service.studentApi.put(
@@ -117,7 +118,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     @DisplayName("Удалить существующего студента")
     public void deleteStudentTest() {
         Service.studentApi.delete(String.valueOf(studentId))
@@ -125,7 +126,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     @DisplayName("Удалить несуществующего студента")
     public void deleteAbsentStudentTest() {
         Service.studentApi.delete(String.valueOf(studentId))
@@ -133,7 +134,7 @@ public class StudentApiTest extends BaseTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     @DisplayName("Корректный запрос PUT /student")
     public void putAbsentStudentTest() {
         Service.studentApi.put(

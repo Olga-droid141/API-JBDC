@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.stepchenkov.api.tags.entity.TagDto;
 import ru.stepchenkov.utils.Fakers;
 
-public class TagDtoTest extends BaseTest {
+public class TagApiTest extends BaseTest {
 
     @Test
     @DisplayName("Получение списка тэгов")

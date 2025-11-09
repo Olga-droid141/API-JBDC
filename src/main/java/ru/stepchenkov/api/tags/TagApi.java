@@ -12,7 +12,7 @@ public class TagApi extends _BaseApi {
     }
 
     private RequestSpecification tags() {
-        return jsonAutoAuth().baseUri("/api/tags");
+        return jsonAutoAuth().basePath("/api/tags");
     }
 
     public Response get() {

@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.Filter;
+import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
@@ -37,7 +38,7 @@ public class _BaseApi {
 
     private List<Filter> getFilters() {
         return List.of(
-                new ResponseLoggingFilter(),
+                new RequestLoggingFilter(System.out),
                 new ResponseLoggingFilter()
         );
     }

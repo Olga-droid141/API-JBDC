@@ -16,7 +16,7 @@ public class StudentApi extends _BaseApi {
 
     private RequestSpecification students() {
         return jsonAutoAuth()
-                .baseUri("/api/students");
+                .basePath("/api/students");
     }
 
     public Response get() {
