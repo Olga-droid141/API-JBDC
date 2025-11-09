@@ -1,0 +1,44 @@
+package ru.stepchenkov.api._base;
+
+import io.restassured.RestAssured;
+import io.restassured.config.HttpClientConfig;
+import io.restassured.config.RestAssuredConfig;
+import io.restassured.filter.Filter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import lombok.RequiredArgsConstructor;
+import ru.stepchenkov.env.config.APIConfig;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+public class _BaseApi {
+    protected final APIConfig CONFIG;
+
+    protected RequestSpecification jsonAutoAuth() {
+        return buildRequest(ContentType.JSON);
+    }
+
+    protected RequestSpecification buildRequest(ContentType contentType) {
+        return RestAssured.given()
+                .config(createConfig())
+                .relaxedHTTPSValidation()
+                .contentType(contentType)
+                .baseUri(CONFIG.url())
+                .filters(getFilters());
+    }
+
+    private RestAssuredConfig createConfig() {
+        return RestAssuredConfig.config()
+                .httpClient(HttpClientConfig.httpClientConfig()
+                        .setParam("http.connection.timeout", 5000));
+    }
+
+    private List<Filter> getFilters() {
+        return List.of(
+                new ResponseLoggingFilter(),
+                new ResponseLoggingFilter()
+        );
+    }
+}
