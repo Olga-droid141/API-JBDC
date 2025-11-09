@@ -18,7 +18,7 @@ public class StudentTagsDao extends _BaseMainDao {
         );
     }
 
-    public List<TagEntity> findAllTagsOfStudent(String studentId) {
+    public List<TagEntity> findAllTagsOfStudent(Integer studentId) {
         final String query = """
                 SELECT * FROM TAGS WHERE ID = (SELECT TAG_ID FROM STUDENT_TAGS WHERE STUDENT_ID = ?)
                 """;

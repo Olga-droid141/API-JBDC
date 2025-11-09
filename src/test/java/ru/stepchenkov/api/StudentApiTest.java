@@ -3,10 +3,14 @@ package ru.stepchenkov.api;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import ru.stepchenkov.api.students.entity.StudentDto;
+import ru.stepchenkov.db.DaoRepository;
+import ru.stepchenkov.db.dao.students.entity.StudentEntity;
+import ru.stepchenkov.db.dao.tags.entity.TagEntity;
 import ru.stepchenkov.utils.DateTime;
 import ru.stepchenkov.utils.Fakers;
 
 import java.util.Collections;
+import java.util.List;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -34,6 +38,7 @@ public class StudentApiTest extends BaseTest {
                 correctStudent
         ).then().statusCode(201).extract().as(StudentDto.class);
         studentId = studentDto.getId();
+        DaoRepository.studentsDao.findStudentById(studentId);
     }
 
     @Test
@@ -96,15 +101,20 @@ public class StudentApiTest extends BaseTest {
     @Order(8)
     @DisplayName("Корректный запрос PUT /student")
     public void putStudentPositiveTest() {
+        StudentDto studentDto = StudentDto.builder()
+                .email(Fakers.randomMail())
+                .name(Fakers.randomName())
+                .createdAt(DateTime.currentDateTime(DateTime.yyyy_MM_dd_T_HH_mm_ssSSS_Z))
+                .tags(Fakers.randomTags(3))
+                .build();
         Service.studentApi.put(
-                StudentDto.builder()
-                        .email(Fakers.randomMail())
-                        .name(Fakers.randomName())
-                        .createdAt(DateTime.currentDateTime(DateTime.yyyy_MM_dd_T_HH_mm_ssSSS_Z))
-                        .tags(Fakers.randomTags(3))
-                        .build(),
+                studentDto,
                 String.valueOf(studentId)
         ).then().statusCode(200).extract().as(StudentDto.class);
+        StudentEntity student = DaoRepository.studentsDao.findStudentById(studentId);
+        Assertions.assertEquals(studentDto.getName(), student.getName());
+        Assertions.assertEquals(studentDto.getCreatedAt(), student.getCreatedAt());
+        Assertions.assertEquals(studentDto.getEmail(), student.getEmail());
     }
 
     @Test
@@ -123,6 +133,8 @@ public class StudentApiTest extends BaseTest {
     public void deleteStudentTest() {
         Service.studentApi.delete(String.valueOf(studentId))
                 .then().statusCode(204);
+        Assertions.assertTrue(DaoRepository.studentsDao.findAllStudent().stream()
+                .noneMatch(se->se.getId().equals(studentId)));
     }
 
     @Test
@@ -135,7 +147,7 @@ public class StudentApiTest extends BaseTest {
 
     @Test
     @Order(12)
-    @DisplayName("Корректный запрос PUT /student")
+    @DisplayName("Запрос PUT /student обновление несуществующего студента")
     public void putAbsentStudentTest() {
         Service.studentApi.put(
                 StudentDto.builder()

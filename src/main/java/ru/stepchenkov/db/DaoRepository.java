@@ -8,9 +8,9 @@ import ru.stepchenkov.db.dao.tags.TagsDao;
 @UtilityClass
 public class DaoRepository {
 
-    StudentsDao studentsDao = new StudentsDao();
+    public StudentsDao studentsDao = new StudentsDao();
 
-    StudentTagsDao studentTagsDao = new StudentTagsDao();
+    public StudentTagsDao studentTagsDao = new StudentTagsDao();
 
-    TagsDao tagsDao = new TagsDao();
+    public TagsDao tagsDao = new TagsDao();
 }

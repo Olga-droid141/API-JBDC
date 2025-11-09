@@ -31,15 +31,18 @@ public class StudentsDao extends _BaseMainDao {
         );
     }
 
-    public StudentEntity findStudentById(String id) {
+    public StudentEntity findStudentById(Integer id) {
         final String query = """
                 SELECT * FROM STUDENTS WHERE ID = ?
                 """;
         return jdbi.withHandle(
-                handle -> handle.createQuery(query)
-                        .bind(0, id)
-                        .mapTo(StudentEntity.class)
-                        .one()
+                handle ->
+                        handle.createQuery(query)
+                                .bind(0, id)
+                                .mapTo(StudentEntity.class)
+                                .findOne()
+                                .orElseThrow(() -> new AssertionError("Не найдент студент!"))
+
         );
     }
 

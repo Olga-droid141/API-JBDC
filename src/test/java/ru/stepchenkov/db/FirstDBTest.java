@@ -2,6 +2,7 @@ package ru.stepchenkov.db;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.stepchenkov.api.BaseTest;
 import ru.stepchenkov.db.dao.students.entity.StudentEntity;
 import ru.stepchenkov.db.dao.stugent_tags.entity.StudentTagsEntity;
 import ru.stepchenkov.db.dao.tags.entity.TagEntity;
@@ -9,7 +10,7 @@ import ru.stepchenkov.db.dao.tags.entity.TagEntity;
 import java.util.Collections;
 import java.util.List;
 
-public class FirstDBTest {
+public class FirstDBTest extends BaseDBTest {
 
 
     @Test
@@ -17,7 +18,7 @@ public class FirstDBTest {
         List<StudentEntity> students = DaoRepository.studentsDao.findStudentByName("Алиса");
         Assertions.assertEquals(1, students.size());
 
-        List<TagEntity> tags = DaoRepository.studentTagsDao.findAllTagsOfStudent(String.valueOf(students.get(0).getId()));
+        List<TagEntity> tags = DaoRepository.studentTagsDao.findAllTagsOfStudent(students.get(0).getId());
         TagEntity expectedTag = new TagEntity();
         expectedTag.setId(5);
         expectedTag.setName("aqa");
