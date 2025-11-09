@@ -41,7 +41,7 @@ public class StudentApiTest extends BaseTest {
     public void studentDubleTest() {
         Service.studentApi.post(
                 correctStudent
-        ).then().statusCode(400)
+        ).then().statusCode(409)
                 .body("title", Matchers.equalTo("такой email уже существует"));
     }
 
