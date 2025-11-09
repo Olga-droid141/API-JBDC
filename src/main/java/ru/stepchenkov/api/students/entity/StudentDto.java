@@ -3,14 +3,18 @@ package ru.stepchenkov.api.students.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder(toBuilder = true)
 @Value
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode
 public class StudentDto {
 
     @JsonProperty("id")
@@ -23,7 +27,7 @@ public class StudentDto {
     String email;
 
     @JsonProperty("tags")
-    List<String> tags = new ArrayList<>();
+    List<String> tags;
 
     @JsonProperty("createdAt")
     String createdAt;

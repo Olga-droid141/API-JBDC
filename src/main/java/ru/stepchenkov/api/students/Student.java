@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
 import ru.stepchenkov.api._base._BaseApi;
+import ru.stepchenkov.api.students.entity.StudentDto;
 import ru.stepchenkov.env.Env;
 
 @Slf4j
@@ -30,11 +31,11 @@ public class Student extends _BaseApi {
         return students().delete("/" + id);
     }
 
-    public Response post(Student student) {
+    public Response post(StudentDto student) {
         return students().body(student).post();
     }
 
-    public Response put(Student student, String id) {
+    public Response put(StudentDto student, String id) {
         return students().body(student).put("/" + id);
     }
 }

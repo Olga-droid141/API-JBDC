@@ -37,6 +37,7 @@ dependencies {
     implementation("org.aeonbits.owner:owner:1.0.12")
     implementation("com.zaxxer:HikariCP:6.2.1")
     implementation("com.h2database:h2:2.3.232")
+    implementation("com.github.javafaker:javafaker:1.0.2")
 }
 
 tasks.test {
